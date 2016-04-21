@@ -55,6 +55,7 @@ sequiturExtension = Extension(
 	'SequenceModel.hh',
 	'Types.hh',
 	'Utility.hh',
+	'UnorderedMap.hh',
         'EditDistance.cc',
         'Estimation.cc',
         'SequenceModel.cc',
