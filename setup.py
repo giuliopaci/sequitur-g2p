@@ -62,7 +62,10 @@ sequiturExtension = Extension(
     include_dirs = [
         os.path.join(path, 'core/include') for path in numpy.__path__ ],
     extra_compile_args = [
-	'-fpermissive']
+	'-fpermissive'],
+    swig_opts = [
+        '-c++', '-shadow'
+    ]
     )
 
 sequiturModules = [
