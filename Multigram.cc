@@ -42,7 +42,7 @@ Multigram::Multigram(PyObject *obj) {
     PyObject *seq = PySequence_Fast(obj, "need a sequence to create a multigram");
     if (!seq) throw ExistingPythonException();
     int len = PySequence_Fast_GET_SIZE(seq);
-    if (len > maximumLength) {
+    if (len > (int)maximumLength) {
 	Py_DECREF(seq);
 	throw PythonException(PyExc_ValueError, "sequence too long");
     }
