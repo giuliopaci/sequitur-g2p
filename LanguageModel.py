@@ -302,8 +302,9 @@ class LanguageModelBuilder(object):
 
     class StoredEffectiveCounts(object):
 	def __init__(self):
-	    self.fname = tempfile.mkstemp('counts')[1]
-	    self.file = open(self.fname, 'wb')
+	    tup = tempfile.mkstemp('counts')
+	    self.fname = tup[1]
+	    self.file = os.fdopen(tup[0], 'wb')
 
 	def add(self, history, values, total):
 	    marshal.dump(history, self.file)
