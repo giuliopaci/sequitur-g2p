@@ -184,7 +184,7 @@ def mainApply(translator, options):
 	except translator.TranslationFailure, exc:
 	    try:
 		print >> stderr, 'failed to convert "%s": %s' % (word, exc)
-	    except:
+	    except Exception:
 		pass
 
 
