@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, you will find it at
 http://www.gnu.org/licenses/gpl.html, or write to the Free Software
-Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
 USA.
  
 Should a provision of no. 9 and 10 of the GNU General Public License
@@ -25,35 +25,35 @@ commercially. In any case guarantee/warranty shall be limited to gross
 negligent actions or intended actions or fraudulent concealment.
 """
 
-import marshal, os
+import marshal, os, gzip
 from mGramCounts import AbstractFileStorage
 
 class StoredCounts(AbstractFileStorage):
     def write(self, seq):
-	file = os.popen('gzip -fc >%s' % self.fname, 'wb')
-	for history, values in seq:
-	    marshal.dump(history, file)
-	    SparseVector.dump(values, file)
-	file.close()
+        file = gzip.open(self.fname, 'wb')
+        for history, values in seq:
+            marshal.dump(history, file)
+            SparseVector.dump(values, file)
+        file.close()
 
     def __iter__(self):
-	file = os.popen('gzip -dc %s' % self.fname, 'rb')
-	while True:
-	    try:
-		history = marshal.load(file)
-		values = SparseVector.load(file)
-		yield (history, values)
-	    except EOFError:
-		break
-	file.close()
+        file = gzip.open(self.fname, 'rb')
+        while True:
+            try:
+                history = marshal.load(file)
+                values = SparseVector.load(file)
+                yield (history, values)
+            except EOFError:
+                break
+        file.close()
 
 def store(seq, big=False, filename=None):
     if big:
-	s = StoredCounts(filename)
-	s.write(seq)
-	return s
+        s = StoredCounts(filename)
+        s.write(seq)
+        return s
     else:
-	return list(seq)
+        return list(seq)
 
 
 from misc import restartable
@@ -69,45 +69,45 @@ def contract(seq):
     (history, predicted), value = it.next()
     values = [(predicted, value)]
     for (h, p), v in it:
-	if h != history:
-	    if h < history:
-		raise NonMonotonousHistoriesError(history, h)
-	    yield history, Counts(values)
-	    history = h
-	    values = []
-	values.append((p, v))
+        if h != history:
+            if h < history:
+                raise NonMonotonousHistoriesError(history, h)
+            yield history, Counts(values)
+            history = h
+            values = []
+        values.append((p, v))
     yield history, Counts(values)
 contract = restartable(contract)
 
 class CountsAccumulator(object):
     def __init__(self):
-	self.terms = [ [], [], [] ]
+        self.terms = [ [], [], [] ]
 
     def set(self, initial = None):
-	self.terms = [ [initial], [], [] ]
+        self.terms = [ [initial], [], [] ]
 
     def shrink(self):
-	for i in range(3):
-	    if len(self.terms[i]) < 64:
-		break
-	    s = sumCounts(self.terms[i])
-	    try:
-		self.terms[i+1].append(s)
-		self.terms[i] = []
-	    except IndexError:
-		self.terms[i] = [s]
+        for i in range(3):
+            if len(self.terms[i]) < 64:
+                break
+            s = sumCounts(self.terms[i])
+            try:
+                self.terms[i+1].append(s)
+                self.terms[i] = []
+            except IndexError:
+                self.terms[i] = [s]
 
     def __iadd__(self, counts):
-	self.terms[0].append(counts)
-	if len(self.terms[0]) > 64:
-	    self.shrink()
-	return self
+        self.terms[0].append(counts)
+        if len(self.terms[0]) > 64:
+            self.shrink()
+        return self
 
     def sum(self):
-	return sumCounts([ t for ts in self.terms for t in ts ])
+        return sumCounts([ t for ts in self.terms for t in ts ])
 
 def sumLotsOfCounts(counts):
     accu = CountsAccumulator()
     for c in counts:
-	accu += c
+        accu += c
     return accu.sum()

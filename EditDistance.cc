@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, you will find it at
  * http://www.gnu.org/licenses/gpl.html, or write to the Free Software
- * Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
  * USA.
  *
  * Should a provision of no. 9 and 10 of the GNU General Public License
@@ -38,7 +38,7 @@ struct Hyp {
 PyObject *python_align(PyObject *self, PyObject *args) {
     struct SubstitutionCost {
 	int operator() (PyObject *a, PyObject *b) {
-	    return (PyObject_Compare(a, b)) ? 1 : 0;
+	    return (PyObject_RichCompareBool(a, b, Py_NE)) ? 1 : 0;
 	}
     };
     SubstitutionCost sub_cost;

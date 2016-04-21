@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, you will find it at
  * http://www.gnu.org/licenses/gpl.html, or write to the Free Software
- * Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
  * USA.
  *
  * Should a provision of no. 9 and 10 of the GNU General Public License
@@ -28,16 +28,15 @@
 #ifndef _SEQUENCEMODEL_HH
 #define _SEQUENCEMODEL_HH
 
-#include "Python.hh"
-
 #include "Obstack.hh"
 #include "Probability.hh"
+#include "Python.hh"
 #include "Types.hh"
 #include <string>
 #include <vector>
 
 #if defined(INSTRUMENTATION)
-#include <ext/hash_map>
+#include "UnorderedMap.hh"
 
 struct StringHash {
     size_t operator() (const char *s) const {
@@ -63,7 +62,7 @@ struct StringEquality :
 
 class StringInventory {
     typedef std::vector<const char*> List;
-    typedef std::hash_map<const char*, u32, StringHash, StringEquality> Map;
+    typedef std::unordered_map<const char*, u32, StringHash, StringEquality> Map;
     List list_;
     Map map_;
 public:

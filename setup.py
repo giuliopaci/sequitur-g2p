@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, you will find it at
 http://www.gnu.org/licenses/gpl.html, or write to the Free Software
-Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
 USA.
  
 Should a provision of no. 9 and 10 of the GNU General Public License
@@ -33,28 +33,29 @@ sequiturExtension = Extension(
     '_sequitur_',
     language = 'c++',
     define_macros=[
-	('MULTIGRAM_SIZE', '4')],
+        ('MULTIGRAM_SIZE', '4')],
     sources = [
-	'sequitur.i',
-	'Assertions.cc',
-	'Types.cc',
-	'Utility.cc',
-	'Graph.cc',
-	'Multigram.cc'],
+        'sequitur.i',
+        'Assertions.cc',
+        'Types.cc',
+        'Utility.cc',
+        'Graph.cc',
+        'Multigram.cc'],
     depends = [
-	'Assertions.hh',
-	'Graph.hh',
-	'Multigram.hh',
-	'MultigramGraph.hh',
-	'Multigram.hh',
-	'Obstack.hh',
-	'PriorityQueue.hh',
-	'Probability.hh',
-	'Python.hh',
-	'ReferenceCounting.hh',
-	'SequenceModel.hh',
-	'Types.hh',
-	'Utility.hh',
+        'Assertions.hh',
+        'Graph.hh',
+        'Multigram.hh',
+        'MultigramGraph.hh',
+        'Multigram.hh',
+        'Obstack.hh',
+        'PriorityQueue.hh',
+        'Probability.hh',
+        'Python.hh',
+        'ReferenceCounting.hh',
+        'SequenceModel.hh',
+        'Types.hh',
+        'Utility.hh',
+        'UnorderedMap.hh',
         'EditDistance.cc',
         'Estimation.cc',
         'SequenceModel.cc',
@@ -62,7 +63,10 @@ sequiturExtension = Extension(
     include_dirs = [
         os.path.join(path, 'core/include') for path in numpy.__path__ ],
     extra_compile_args = [
-	'-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION']
+        '-fpermissive'],
+    swig_opts = [
+        '-c++', '-shadow'
+    ]
     )
 
 sequiturModules = [

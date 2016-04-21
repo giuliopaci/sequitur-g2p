@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, you will find it at
 http://www.gnu.org/licenses/gpl.html, or write to the Free Software
-Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
 USA.
  
 Should a provision of no. 9 and 10 of the GNU General Public License
@@ -38,26 +38,26 @@ class SymbolInventory:
     term = 1
 
     def __init__(self):
-	self.list = ['__void__', '__term__']
-	self.dir  = { '__term__' : self.term }
+        self.list = ['__void__', '__term__']
+        self.dir  = { '__term__' : self.term }
 
     def size(self):
-	"The number of symbols, including __term__, but not counting __void__."
-	return len(self.list) - 1
+        "The number of symbols, including __term__, but not counting __void__."
+        return len(self.list) - 1
 
     def index(self, sym):
-	try:
-	    return self.dir[sym]
-	except KeyError:
-	    result = self.dir[sym] = len(self.list)
-	    self.list.append(sym)
-	    return result
+        try:
+            return self.dir[sym]
+        except KeyError:
+            result = self.dir[sym] = len(self.list)
+            self.list.append(sym)
+            return result
 
     def parse(self, seq):
-	return tuple(map(self.index, list(seq)))
+        return tuple(map(self.index, list(seq)))
 
     def symbol(self, ind):
-	return self.list[ind]
+        return self.list[ind]
 
     def format(self, seq):
-	return tuple(map(self.symbol, seq))
+        return tuple(map(self.symbol, seq))

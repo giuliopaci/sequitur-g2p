@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, you will find it at
  * http://www.gnu.org/licenses/gpl.html, or write to the Free Software
- * Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
  * USA.
  *
  * Should a provision of no. 9 and 10 of the GNU General Public License
@@ -71,10 +71,10 @@ namespace AssertionsPrivate {
     }
     $1 = std::string(PyString_AsString($input));
 }
-#endif  // SWIGPYTHON
+#endif // SWIGPYTHON
 
 %{
-#include "numpy/ndarrayobject.h"
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "numpy/arrayobject.h"
     typedef PyArrayObject* DoubleVector;
 %}
@@ -89,7 +89,7 @@ namespace AssertionsPrivate {
 %typemap(freearg) DoubleVector {
     Py_DECREF($1);
 }
-#endif  // SWIGPYTHON
+#endif // SWIGPYTHON
 
 // ===========================================================================
 %{
@@ -145,7 +145,7 @@ namespace AssertionsPrivate {
 	"(NN)", 
 	$1.left.asPyObject(), $1.right.asPyObject());
 }
-#endif  // SWIGPYTHON
+#endif // SWIGPYTHON
 
 class MultigramInventory {
 public:
@@ -182,7 +182,7 @@ public:
     if (ptr == NULL) SWIG_fail;
     $1 = reinterpret_cast<SequenceModel::History>(ptr);
 }
-#endif  // SWIGPYTHON
+#endif // SWIGPYTHON
 
 class SequenceModel {
 public:
@@ -214,7 +214,7 @@ public:
     StringInventory(PyObject*);
     ~StringInventory();
 };
-#endif  // INSTRUMENTATION
+#endif // INSTRUMENTATION
 
 // ===========================================================================
 %{
@@ -268,7 +268,7 @@ public:
 	DoubleVector discountArray) 
     {
 	std::vector<double> discounts(
-	    (double*) PyArray_DATA(discountArray), 
+	    (double*) PyArray_DATA(discountArray),
 	    (double*) PyArray_DATA(discountArray) + PyArray_DIMS(discountArray)[0]);
 	self->makeSequenceModel(target, vocabularySize, discounts);
     }
@@ -321,7 +321,7 @@ public:
     ~Translator_NBestContext();
 #if defined(INSTRUMENTATION)
     void draw(FILE*, const StringInventory*) const;
-#endif  // INSTRUMENTATION
+#endif // INSTRUMENTATION
 };
 
 class Translator {

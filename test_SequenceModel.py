@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, you will find it at
 http://www.gnu.org/licenses/gpl.html, or write to the Free Software
-Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
 USA.
  
 Should a provision of no. 9 and 10 of the GNU General Public License
@@ -33,39 +33,39 @@ class SequenceModelEstimatorTestCase(unittest.TestCase):
     estimator = SequenceModelEstimator()
 
     def failUnlessNormalized(self, model, hists = ['A', 'B', 'C'], preds = ['X', 'Y', 'Z']):
-	for u in hists:
-	    for v in hists:
-		sum = 0.0
-		for w in preds:
-		    p = model((u, v), w)
+        for u in hists:
+            for v in hists:
+                sum = 0.0
+                for w in preds:
+                    p = model((u, v), w)
 #                   print u, v, w, p
-		    sum += p
+                    sum += p
 #               print u, v, sum
 #               print
-		self.failUnlessAlmostEqual(sum, 1.0)
+                self.failUnlessAlmostEqual(sum, 1.0)
 
     def testEmpty(self):
-	evidence = []
-	model = self.estimator.make(3, evidence, [0.0])
+        evidence = []
+        model = self.estimator.make(3, evidence, [0.0])
 #       self.show(model)
 #       self.failUnlessEqual(model, [])
 
     def testOne(self):
-	evidence = [((), 'X', 1.0)]
-	model = self.estimator.make(3, evidence, [0.1, 0.0])
+        evidence = [((), 'X', 1.0)]
+        model = self.estimator.make(3, evidence, [0.1, 0.0])
 #       self.show(model)
 
     def testTwo(self):
-	evidence = [(('A', 'B'), 'X', 3.0),
-		    (('C', 'B'), 'Y', 3.0)]
-	model = self.estimator.make(3, evidence, [0.8, 1.0, 0.0])
+        evidence = [(('A', 'B'), 'X', 3.0),
+                    (('C', 'B'), 'Y', 3.0)]
+        model = self.estimator.make(3, evidence, [0.8, 1.0, 0.0])
 #       self.show(model)
-	self.failUnlessNormalized(model)
+        self.failUnlessNormalized(model)
 #       print model.perplexity(evidence)
 
     def show(sslf, model):
-	for (history, predicted), probability in model:
-	    print history, predicted, probability
+        for (history, predicted), probability in model:
+            print history, predicted, probability
 
 
 if __name__ == '__main__':
