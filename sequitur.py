@@ -660,7 +660,7 @@ class ModelTemplate:
 	    print >> context.log, 'iteration: %s' % context.iteration
 	    try:
 		shouldStop = self.iterate(context)
-	    except:
+	    except Exception:
 		import traceback
 		traceback.print_exc()
 		print >> context.log, 'iteration failed.'
