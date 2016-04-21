@@ -27,6 +27,7 @@
 
 #include "Assertions.hh"
 #include "Multigram.hh"
+#include "Python.hh"
 
 
 PyObject *Multigram::asPyObject() const {
