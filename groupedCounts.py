@@ -25,19 +25,19 @@ commercially. In any case guarantee/warranty shall be limited to gross
 negligent actions or intended actions or fraudulent concealment.
 """
 
-import marshal, os
+import marshal, os, gzip
 from mGramCounts import AbstractFileStorage
 
 class StoredCounts(AbstractFileStorage):
     def write(self, seq):
-	file = os.popen('gzip -fc >%s' % self.fname, 'wb')
+	file = gzip.open(self.fname, 'wb')
 	for history, values in seq:
 	    marshal.dump(history, file)
 	    SparseVector.dump(values, file)
 	file.close()
 
     def __iter__(self):
-	file = os.popen('gzip -dc %s' % self.fname, 'rb')
+	file = gzip.open(self.fname, 'rb')
 	while True:
 	    try:
 		history = marshal.load(file)
