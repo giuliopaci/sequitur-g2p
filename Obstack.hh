@@ -28,9 +28,10 @@
 #ifndef _CORE_OBSTACK_HH
 #define _CORE_OBSTACK_HH
 
-#include <new>
-#include <algorithm>
 #include "Assertions.hh"
+#include <algorithm>
+#include <memory>
+#include <new>
 
 namespace Core {
 
@@ -142,7 +143,7 @@ public:
     void grow(const Item &i, size_t n) {
 	require(begin_);
 	provide(n);
-	current_->tail = uninitialized_fill_n(current_->tail, n, i);
+	current_->tail = std::uninitialized_fill_n(current_->tail, n, i);
 	new(current_->tail++) Item(i);
     }
 
@@ -150,7 +151,7 @@ public:
 	require(begin_);
 	require(begin <= end);
 	provide(end - begin);
-	current_->tail = uninitialized_copy(begin, end, current_->tail);
+	current_->tail = std::uninitialized_copy(begin, end, current_->tail);
     }
 
     void grow0(const Item *begin, const Item *end) {
