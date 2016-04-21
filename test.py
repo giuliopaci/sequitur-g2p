@@ -38,8 +38,8 @@ def suite():
     tests = TestSuite()
     testModules = [ f.rstrip('.py') for f in glob.glob('test_*.py') ]
     for name in testModules:
-	module = __import__(name)
-	tests.addTest(defaultTestLoader.loadTestsFromModule(module))
+        module = __import__(name)
+        tests.addTest(defaultTestLoader.loadTestsFromModule(module))
     return tests
 
 if __name__ == '__main__':
