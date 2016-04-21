@@ -411,8 +411,8 @@ public:
 	require(left >= 0);
 	require(right >= 0);
 	require(left > 0 || right > 0);
-	require(left  <= Multigram::maximumLength);
-	require(right <= Multigram::maximumLength);
+	require(left  <= static_cast<int>(Multigram::maximumLength));
+	require(right <= static_cast<int>(Multigram::maximumLength));
 	SizeTemplate st;
 	st.left = left;
 	st.right = right;
