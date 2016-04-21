@@ -205,7 +205,7 @@ public:
 	    verify(current.state.pos <= left.size());
 	    int lb = current.state.pos;
 	    LeftMap::const_iterator mi, mi_end;
-	    for (int le = lb + minLeftLen_; le <= lb + maxLeftLen_ && le <= left.size(); ++le) {
+	    for (int le = lb + (int)minLeftLen_; le <= lb + (int)maxLeftLen_ && le <= (int)left.size(); ++le) {
 		Multigram lmg(&left[lb], &left[le]);
 		for (Core::tie(mi, mi_end) = leftMap_.equal_range(lmg); mi != mi_end; ++mi) {
 		    next.q = mi->second;
@@ -396,7 +396,7 @@ public:
 	    verify(current.state.pos <= left.size());
 	    int lb = current.state.pos;
 	    LeftMap::const_iterator mi, mi_end;
-	    for (int le = lb + minLeftLen_; le <= lb + maxLeftLen_ && le <= left.size(); ++le) {
+	    for (int le = lb + (int)minLeftLen_; le <= lb + (int)maxLeftLen_ && le <= (int)left.size(); ++le) {
 		Multigram lmg(&left[lb], &left[le]);
 		for (Core::tie(mi, mi_end) = leftMap_.equal_range(lmg); mi != mi_end; ++mi) {
 		    SequenceModel::Token q = mi->second;
