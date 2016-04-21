@@ -183,7 +183,7 @@ public:
 SequenceModel::Internal::Internal(Node::Index nNodes, Node::Index nWordProbabilities) {
     nodes.reserve(nNodes+1);
     wordProbabilities.reserve(nWordProbabilities);
-};
+}
 
 SequenceModel::Internal::~Internal() {}
 
@@ -462,7 +462,11 @@ void SequenceModel::set(PyObject *obj) {
     if (!PySequence_Check(obj))
 	throw PythonException(PyExc_TypeError, "not a sequence");
 
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+    std::shared_ptr<InitData> data(new InitData);
+#else
     std::auto_ptr<InitData> data(new InitData);
+#endif
 
     std::vector<Token> history;
     int len = PySequence_Length(obj);
