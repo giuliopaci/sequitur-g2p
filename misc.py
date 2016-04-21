@@ -58,7 +58,7 @@ def meminfo():
     pid = os.getpid()
     try:
         data = open('/proc/%d/statm' % pid).read()
-    except:
+    except Exception:
         raise NotImplementedError
     data = map(int, data.split())
     size, resident, shared, trs, drs, lrs, dt = tuple(data)
@@ -96,7 +96,7 @@ class MemoryProfiler:
 	    if hasattr(object, 'memoryUsed'):
 		try:
 		    return object.memoryUsed()
-		except:
+		except Exception:
 		    return -1
 	    if type(object) in self.valuators:
 		return self.pythonObjectHead + self.valuators[type(object)](object)
