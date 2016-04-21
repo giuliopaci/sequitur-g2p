@@ -34,88 +34,88 @@ import difflib, itertools, misc, StringIO
 
 class EqualFile(StringIO.StringIO):
     def __init__(self, fname):
-	StringIO.StringIO.__init__(self)
-	self.reference = gOpenIn(fname).read()
-	self.data = None
+        StringIO.StringIO.__init__(self)
+        self.reference = gOpenIn(fname).read()
+        self.data = None
 
     def close(self):
-	self.data = self.getvalue()
-	StringIO.StringIO.close(self)
+        self.data = self.getvalue()
+        StringIO.StringIO.close(self)
 
     def __nonzero__(self):
-	if self.data is None:
-	    self.data = self.getvalue()
-	if self.data == self.reference:
-	    return True
-	else:
-	    self.diff()
-	    return False
+        if self.data is None:
+            self.data = self.getvalue()
+        if self.data == self.reference:
+            return True
+        else:
+            self.diff()
+            return False
 
     def diff(self):
-	if self.data is None:
-	    self.data = self.getvalue()
-	diff = difflib.unified_diff(
-	    self.reference.split('\n'),
-	    self.data.split('\n'))
-	for line in diff:
-	    print >> sys.stderr, line
+        if self.data is None:
+            self.data = self.getvalue()
+        diff = difflib.unified_diff(
+            self.reference.split('\n'),
+            self.data.split('\n'))
+        for line in diff:
+            print >> sys.stderr, line
 
 
 class MGramCountTestCase(TestCase):
     """
     regenerate reference data:
     mGramCounts.py --text tests/nab-mini-corpus.txt.gz
-		   --write tests/nab-mini-corpus.raw-counts.gz
-		   --counts-of-counts tests/nab-mini-corpus.raw-coc
+                   --write tests/nab-mini-corpus.raw-counts.gz
+                   --counts-of-counts tests/nab-mini-corpus.raw-coc
 
     mGramCounts.py --text tests/nab-mini-corpus.txt.gz
-		   --vocab tests/nab-5k-vocabulary.txt.gz
-		   --write tests/nab-mini-corpus.mapped-counts.gz
+                   --vocab tests/nab-5k-vocabulary.txt.gz
+                   --write tests/nab-mini-corpus.mapped-counts.gz
     """
 
     def testLoadVocabulary(self):
-	vocabulary = loadVocabulary('tests/nab-5k-vocabulary.txt.gz')
-	self.failUnlessEqual(vocabulary.size(), 4990)
+        vocabulary = loadVocabulary('tests/nab-5k-vocabulary.txt.gz')
+        self.failUnlessEqual(vocabulary.size(), 4990)
 
     order = 2
 
     def templateTestRawCounts(self, StorageClass):
-	text = misc.gOpenIn('tests/nab-mini-corpus.txt.gz')
-	sentences = itertools.imap(str.split, text)
-	grams = mGramsChainCount(sentences, self.order)
-	counts = StorageClass()
-	counts.addIter(grams)
+        text = misc.gOpenIn('tests/nab-mini-corpus.txt.gz')
+        sentences = itertools.imap(str.split, text)
+        grams = mGramsChainCount(sentences, self.order)
+        counts = StorageClass()
+        counts.addIter(grams)
 
-	f = EqualFile('tests/nab-mini-corpus.raw-counts.gz')
-	TextStorage.write(f, counts)
-	self.failUnless(f)
+        f = EqualFile('tests/nab-mini-corpus.raw-counts.gz')
+        TextStorage.write(f, counts)
+        self.failUnless(f)
 
     def templateTestMappedCounts(self, StorageClass):
-	vocabulary = loadVocabulary('tests/nab-5k-vocabulary.txt.gz')
-	text = misc.gOpenIn('tests/nab-mini-corpus.txt.gz')
-	sentences = itertools.imap(str.split, text)
-	sentences = itertools.imap(lambda s: map(vocabulary.map, s), sentences)
-	grams = mGramsChainCount(sentences, self.order)
-	counts = StorageClass()
-	counts.addIter(grams)
+        vocabulary = loadVocabulary('tests/nab-5k-vocabulary.txt.gz')
+        text = misc.gOpenIn('tests/nab-mini-corpus.txt.gz')
+        sentences = itertools.imap(str.split, text)
+        sentences = itertools.imap(lambda s: map(vocabulary.map, s), sentences)
+        grams = mGramsChainCount(sentences, self.order)
+        counts = StorageClass()
+        counts.addIter(grams)
 
-	f = EqualFile('tests/nab-mini-corpus.mapped-counts.gz')
-	TextStorage.write(f, counts)
-	self.failUnless(f)
+        f = EqualFile('tests/nab-mini-corpus.mapped-counts.gz')
+        TextStorage.write(f, counts)
+        self.failUnless(f)
 
     def testCoutsOfCounts(self):
-	counts = TextStorage('tests/nab-mini-corpus.raw-counts.gz')
-	coc = [ mGramCounts.countsOfCounts(mGramReduceToOrder(counts, order))
-		for order in range(self.order) ]
-	reference = eval(open('tests/nab-mini-corpus.raw-coc').read())
-	for order in range(self.order):
-	    self.failUnlessEqual(coc[order], reference[order])
+        counts = TextStorage('tests/nab-mini-corpus.raw-counts.gz')
+        coc = [ mGramCounts.countsOfCounts(mGramReduceToOrder(counts, order))
+                for order in range(self.order) ]
+        reference = eval(open('tests/nab-mini-corpus.raw-coc').read())
+        for order in range(self.order):
+            self.failUnlessEqual(coc[order], reference[order])
 
 for StorageClass in [DictStorage, ListStorage, SimpleMultifileStorage, BiHeapMultifileStorage]:
     def testRawCounts(self, StorageClass=StorageClass):
-	return self.templateTestRawCounts(StorageClass)
+        return self.templateTestRawCounts(StorageClass)
     def testMappedCounts(self, StorageClass=StorageClass):
-	return self.templateTestMappedCounts(StorageClass)
+        return self.templateTestMappedCounts(StorageClass)
     setattr(MGramCountTestCase, 'testRawCountsWith'    + StorageClass.__name__, testRawCounts)
     setattr(MGramCountTestCase, 'testMappedCountsWith' + StorageClass.__name__, testMappedCounts)
 
@@ -124,41 +124,41 @@ class LanguageModelTestCase(TestCase):
     """
     regenerate reference data:
     LanguageModel.py --read tests/nab-mini-corpus.mapped-counts.gz
-		     --vocab tests/nab-5k-vocabulary.txt.gz
-		     --counts-of-counts tests/nab-mini-corpus.raw-coc
-		     --order 1
-		     --lm tests/nab-mini-corpus.unigram.lm.gz
+                     --vocab tests/nab-5k-vocabulary.txt.gz
+                     --counts-of-counts tests/nab-mini-corpus.raw-coc
+                     --order 1
+                     --lm tests/nab-mini-corpus.unigram.lm.gz
 
     LanguageModel.py --read tests/nab-mini-corpus.mapped-counts.gz
-		     --vocabulary tests/nab-5k-vocabulary.txt.gz
-		     --counts-of-counts tests/nab-mini-corpus.raw-coc
-		     --order 3
-		     --lm tests/nab-mini-corpus.trigram.lm.gz
+                     --vocabulary tests/nab-5k-vocabulary.txt.gz
+                     --counts-of-counts tests/nab-mini-corpus.raw-coc
+                     --order 3
+                     --lm tests/nab-mini-corpus.trigram.lm.gz
     """
 
     order = 3
     def setUp(self):
-	self.vocabulary = loadVocabulary('tests/nab-5k-vocabulary.txt.gz')
-	self.counts = loadCounts('tests/nab-mini-corpus.mapped-counts.gz', self.vocabulary)
-	self.coc = eval(open('tests/nab-mini-corpus.raw-coc').read())
-	self.builder = LanguageModelBuilder()
-	self.builder.setVocabulary(self.vocabulary)
+        self.vocabulary = loadVocabulary('tests/nab-5k-vocabulary.txt.gz')
+        self.counts = loadCounts('tests/nab-mini-corpus.mapped-counts.gz', self.vocabulary)
+        self.coc = eval(open('tests/nab-mini-corpus.raw-coc').read())
+        self.builder = LanguageModelBuilder()
+        self.builder.setVocabulary(self.vocabulary)
 
     def testUnigram(self):
-	self.builder.setHighestOrder(0)
-	self.builder.estimateDiscounts(self.coc)
-	f = EqualFile('tests/nab-mini-corpus.unigram.lm.gz')
-	lm = LmArpaWriter(f, 0)
-	self.builder.build(self.counts, lm)
-	self.failUnless(f)
+        self.builder.setHighestOrder(0)
+        self.builder.estimateDiscounts(self.coc)
+        f = EqualFile('tests/nab-mini-corpus.unigram.lm.gz')
+        lm = LmArpaWriter(f, 0)
+        self.builder.build(self.counts, lm)
+        self.failUnless(f)
 
     def testTrigram(self):
-	self.builder.setHighestOrder(2)
-	self.builder.estimateDiscounts(self.coc)
-	f = EqualFile('tests/nab-mini-corpus.trigram.lm.gz')
-	lm = LmArpaWriter(f, 2)
-	self.builder.build(self.counts, lm)
-	self.failUnless(f)
+        self.builder.setHighestOrder(2)
+        self.builder.estimateDiscounts(self.coc)
+        f = EqualFile('tests/nab-mini-corpus.trigram.lm.gz')
+        lm = LmArpaWriter(f, 2)
+        self.builder.build(self.counts, lm)
+        self.failUnless(f)
 
 
 if __name__ == '__main__':
