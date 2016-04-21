@@ -149,12 +149,12 @@ class ListStorage(Storage):
 	return iter(self.items)
 
 # ===========================================================================
-import marshal, os, tempfile
+import marshal, os, tempfile, gzip
 
 class FileWriter(object):
     def __init__(self, fname):
 	self.fname = fname
-	self.f = os.popen('gzip -fc >%s' % self.fname, 'wb')
+	self.f = gzip.open(self.fname, 'wb')
 	self.n = 0
 
     def write(self, item):
@@ -181,7 +181,7 @@ class FileReader(object):
 	self.fname = fname
 
     def __iter__(self):
-	f = os.popen('gzip -dc %s' % self.fname, 'rb')
+	f = gzip.open(self.fname, 'rb')
 	while True:
 	    try:
 		yield marshal.load(f)
