@@ -28,12 +28,11 @@
 #ifndef _MULTIGRAM_HH
 #define _MULTIGRAM_HH
 
-#include <vector>
-#include <tr1/unordered_map>
 #include "SequenceModel.hh"
 #include "Python.hh"
+#include "UnorderedMap.hh"
+#include <vector>
 
-namespace std { using namespace tr1; }
 
 #if !defined(MULTIGRAM_SIZE)
 #error "You need to define MULTIGRAM_SIZE."
@@ -166,7 +165,9 @@ public:
     }
 
     size_t memoryUsed() const {
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	struct MapNode { Map::value_type value; bool cond;};
+#elif __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)
 	typedef std::__detail::_Hash_node<Map::value_type, false> MapNode;
 #elif __GNUC__ == 4 && __GNUC_MINOR__ == 2
 	typedef std::tr1::__detail::_Hash_node<Map::value_type, false> MapNode;
