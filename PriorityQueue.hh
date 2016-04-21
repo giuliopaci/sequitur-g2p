@@ -65,7 +65,7 @@ namespace Core {
 	/** Remove top-most item */
 	void pop() {
 	    require(!Precursor::empty());
-	    move(1, Precursor::size());
+	    this->move(1, Precursor::size());
 	    Precursor::deleteLast();
 	    if (Precursor::size() > 0) downHeap(1);
 	    verify_(invariant());
@@ -76,15 +76,15 @@ namespace Core {
 	 * Equivalent to pop(); insert(), but usually more efficient.
 	 */
 	void changeTop(const Item &e) {
-	    put(1, e);
+	    this->put(1, e);
 	    downHeap(1);
 	    verify_(invariant());
 	}
 
 	/** Insert new item */
 	void insert(const Item &e) {
-	    append(e);
-	    upHeap(Precursor::size()) ;
+	    this->append(e);
+	    this->upHeap(Precursor::size()) ;
 	    verify_(invariant());
 	    //if (size() > maxSize_) deleteLast();
 	}
@@ -94,33 +94,33 @@ namespace Core {
     void PriorityQueueBase<H, PF>::downHeap(Index i) {
 	require(1 <= i && i <= Precursor::size());
 	Index j;
-	Item e = item(i);
+	Item e = this->item(i);
 	while (i <= Precursor::size() / 2) {
 	    j = 2 * i;
-	    if (j < Precursor::size() && precedes_(item(j+1), item(j))) j = j + 1;
-	    if (!precedes_(item(j), e)) break;
-	    move(i, j);
+	    if (j < Precursor::size() && this->precedes_(this->item(j+1), this->item(j))) j = j + 1;
+	    if (!this->precedes_(this->item(j), e)) break;
+	    this->move(i, j);
 	    i = j;
 	}
-	put(i, e);
+	this->put(i, e);
     }
 
     template <class H, class PF>
     void PriorityQueueBase<H, PF>::upHeap(Index i) {
 	require(1 <= i && i <= Precursor::size());
-	Item e = item(i);
-	while (i > 1 && !precedes_(item(i/2), e)) {
-	    move(i, i/2);
+	Item e = this->item(i);
+	while (i > 1 && !this->precedes_(this->item(i/2), e)) {
+	    this->move(i, i/2);
 	    i /= 2;
 	}
-	put(i, e);
+	this->put(i, e);
     }
 
     template <class H, class PF>
     bool PriorityQueueBase<H, PF>::invariant() const {
 	if (!Precursor::invariant()) return false;
 	for (Index i = 2 ; i < Precursor::size() ; ++i)
-	    if (precedes_(item(i), item(i/2)))
+	    if (this->precedes_(this->item(i), this->item(i/2)))
 		return false;
 	return true;
     }
@@ -166,30 +166,30 @@ namespace Core {
 	bool contains(const Key &k) const {
 	    //	require(key_valid(k)) ;
 	    typename Map::const_iterator it(map_.find(k));
-	    if (it == map_.end()) return false;
+	    if (it == this->map_.end()) return false;
 	    typename Precursor::Index i = it->second;
-	    return 0 < i && i < Precursor::heap_.size() && key_(Precursor::heap_[i]) == k;
+	    return 0 < i && i < Precursor::heap_.size() && this->key_(Precursor::heap_[i]) == k;
 	}
 
 	const typename Precursor::Item& operator[] (const Key &k) const {
-	    require(contains(k));
-	    return Precursor::heap_[map_[k]];
+	    require(this->contains(k));
+	    return Precursor::heap_[this->map_[k]];
 	}
     protected:
 	void put(typename Precursor::Index i, const typename Precursor::Item &e) {
 	    Precursor::heap_[i] = e;
-	    verify(key_(Precursor::heap_[i]) == key_(e));
-	    map_[key_(e)] = i;
+	    verify(this->key_(Precursor::heap_[i]) == this->key_(e));
+	    this->map_[this->key_(e)] = i;
 	}
 
 	void move(typename Precursor::Index to,typename Precursor::Index from) {
 	    Precursor::heap_[to] = Precursor::heap_[from];
-	    map_[key_(Precursor::heap_[to])] = to;
+	    this->map_[this->key_(Precursor::heap_[to])] = to;
 	}
 
 	void append(const typename Precursor::Item &e) {
 	    Precursor::heap_.push_back(e);
-	    map_[key_(Precursor::heap_.back())] = Precursor::size()-1;
+	    this->map_[this->key_(Precursor::heap_.back())] = Precursor::size()-1;
 	}
     };
 
@@ -197,8 +197,8 @@ namespace Core {
 	      template <typename, typename,typename> class T_Map, class T_Hash_Obj>
     bool TracedHeap<T_Item, T_Key, T_KeyFunction, T_Map, T_Hash_Obj>::invariant() const {
 	for (typename Precursor::Index i = 1 ; i < Precursor::size() ; ++i) {
-	    typename Map::const_iterator it(map_.find(key_(item(i))));
-	    if (it == map_.end()) return false;
+	    typename Map::const_iterator it(this->map_.find(this->key_(this->item(i))));
+	    if (it == this->map_.end()) return false;
 	    if (it->second != i) return false;
 	}
 	return true;
@@ -242,13 +242,13 @@ namespace Core {
 	    Precursor(precedes, maxSize) {}
 
 	void insert(const typename Precursor::Item &e) {
-	    require(!contains(key_(e)));
+	    require(!this->contains(this->key_(e)));
 	    Precursor::insert(e) ;
-	    ensure(contains(key_(e))) ;
+	    ensure(this->contains(this->key_(e))) ;
 	}
 
 	void changeTop(const typename Precursor::Item &e) {
-	    require(!contains(key_(e)) || Precursor::map_[key_(e)] == 1);
+	    require(!this->contains(this->key_(e)) || Precursor::map_[this->key_(e)] == 1);
 	    Precursor::changeTop(e);
 	}
 
@@ -262,14 +262,14 @@ namespace Core {
 
 	/** Change item with the key of @c e to @c e. */
 	void update(const typename Precursor::Item &e) {
-	    require(contains(key_(e)));
-	    typename Precursor::Index i = Precursor::map_[key_(e)] ;
-	    if (precedes_(e, Precursor::heap_[i])) {
+	    require(this->contains(this->key_(e)));
+	    typename Precursor::Index i = Precursor::map_[this->key_(e)] ;
+	    if (this->precedes_(e, Precursor::heap_[i])) {
 		Precursor::heap_[i] = e;
-		upHeap(i);
+		this->upHeap(i);
 	    } else {
 		Precursor::heap_[i] = e;
-		downHeap(i);
+		this->downHeap(i);
 	    }
 	}
 
@@ -289,11 +289,11 @@ namespace Core {
 	 * given item dropped, and the stack is unchanged.
 	 */
 	bool insertOrRelax(const typename Precursor::Item &e) {
-	    if (contains(key_(e))) {
-		typename Precursor::Index i = Precursor::map_[key_(e)] ;
-		if (precedes_(e, Precursor::heap_[i])) {
+	    if (this->contains(this->key_(e))) {
+		typename Precursor::Index i = Precursor::map_[this->key_(e)] ;
+		if (this->precedes_(e, Precursor::heap_[i])) {
 		    Precursor::heap_[i] = e;
-		    upHeap(i);
+		    this->upHeap(i);
 		    verify_(invariant());
 		} else return false;
 	    } else insert(e);
