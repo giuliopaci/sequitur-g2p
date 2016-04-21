@@ -30,7 +30,7 @@
 #include "Probability.hh"
 #include "Python.hh"
 #include "SequenceModel.hh"
-#include <tr1/unordered_map>
+#include "UnorderedMap.hh"
 #include <vector>
 
 
@@ -211,7 +211,9 @@ public:
     SequenceModelEstimator *makeSequenceModelEstimator() const;
 
     size_t memoryUsed() const {
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	struct StoreNode { typename Store::value_type value; bool cond;};
+#elif __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)
 	typedef std::__detail::_Hash_node<Store::value_type, false> StoreNode;
 #elif __GNUC__ == 4 && __GNUC_MINOR__ == 2
 	typedef std::tr1::__detail::_Hash_node<Store::value_type, false> StoreNode;
@@ -616,7 +618,9 @@ public:
     }
 
     size_t memoryUsed() const {
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	struct NodeStateMapNode { typename NodeStateMap::value_type value; bool cond;};
+#elif __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)
 	typedef std::__detail::_Hash_node<NodeStateMap::value_type, false> NodeStateMapNode;
 #elif __GNUC__ == 4 && __GNUC_MINOR__ == 2
 	typedef std::tr1::__detail::_Hash_node<NodeStateMap::value_type, false> NodeStateMapNode;
@@ -721,9 +725,12 @@ void SequenceModelEstimator::makeSequenceModel(
     reset();
     doKneserNeyDiscounting(discounts);
     computeProbabilities(vocabularySize);
-
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+    std::shared_ptr<SequenceModel::InitData> data(new SequenceModel::InitData);
+#else
     std::auto_ptr<SequenceModel::InitData> data(new SequenceModel::InitData);
-    std::vector<Token> history;
+#endif
+    std::vector<SequenceModel::Token> history;
     for (GroupStore::const_iterator g = groups.begin(); g != groups.end(); ++g) {
 	sequenceModel_->historyAsVector(g->first, history);
 	std::reverse(history.begin(), history.end());
