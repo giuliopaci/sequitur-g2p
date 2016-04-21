@@ -17,7 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, you will find it at
 http://www.gnu.org/licenses/gpl.html, or write to the Free Software
-Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
 USA.
  
 Should a provision of no. 9 and 10 of the GNU General Public License
@@ -258,7 +258,7 @@ def addTrainOptions(optparser):
 	help='wipe out probabilities, retain only model structure')
     optparser.add_option(
 	'-C', '--initialize-with-counts', dest='shouldInitializeWithCounts', action='store_true',
-	help='estimate probabilities from overlapping occurence counts in first iteration')
+	help='initialize probabilities estimation by counting how many times every graphone occurs in the training set, disregarding possible overlaps')
     optparser.add_option(
 	'-i', '--min-iterations', dest='minIterations', type='int', default=ModelTemplate.minIterations,
 	help='minimum number of EM iterations during training')
