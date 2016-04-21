@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, you will find it at
  * http://www.gnu.org/licenses/gpl.html, or write to the Free Software
- * Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
  * USA.
  *
  * Should a provision of no. 9 and 10 of the GNU General Public License
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     hope(p == Probability::impossible());
     hope(s == LogProbability::impossible());
 
-    // cetrainty
+    // certainty
     p = Probability::certain();
     hope(p == Probability::certain());
     hope(p.complement() == Probability::impossible());
