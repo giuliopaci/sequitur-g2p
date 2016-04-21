@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, you will find it at
 http://www.gnu.org/licenses/gpl.html, or write to the Free Software
-Foundation, Inc., 51 Franlin Street, Fifth Floor, Boston, MA 02110,
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
 USA.
  
 Should a provision of no. 9 and 10 of the GNU General Public License
@@ -79,8 +79,8 @@ class AbsoluteDiscounting(Discount):
 
 class TripleAbsoluteDiscounting(Discount):
     """
-    Chen and Goodman's Modified Kneser-Ney smooting with three
-    discounting paramters for n=1, n=2 and n>=3.
+    Chen and Goodman's Modified Kneser-Ney smoothing with three
+    discounting parameters for n=1, n=2 and n>=3.
     """
 
     discount1 = 0.1
@@ -266,7 +266,7 @@ class LanguageModelBuilder(object):
 	self.log('\nbuilding order', order)
 
 	minCount = self.countCutoff(order)
-	self.log('count cutoff: ingoring counts < %d' % minCount)
+	self.log('count cutoff: ignoring counts < %d' % minCount)
 
 	discount = self.discount(order)
 	self.log('discounting:')
@@ -548,8 +548,8 @@ class LmEstarWriter(LmDummy):
 	      ABOUT   0.00264798
       \end\
 
-    - Any content before \data\ or after \end\ is ingored
-    - The tag \include: \ names a file (realtive path to the current
+    - Any content before \data\ or after \end\ is ignored
+    - The tag \include: \ names a file (relative path to the current
       file, that is read as if its contents (between \data\ and \end\
       were included in this position.
     - Histories are given in reverse order (i.e. recent-most first)
@@ -610,7 +610,7 @@ class LmEstarWriter(LmDummy):
 
     def boSection(self, order):
 	f = gOpenOut(self.filename('%dbo' % (order + 1)))
-	comment = 'This is a modfied back-off %d-gram distribution file.\n' % (order + 1)
+	comment = 'This is a modified back-off %d-gram distribution file.\n' % (order + 1)
 	if self.notice: comment = notice + '\n' + comment
 	part = self.Writer(f, self.vocabulary, comment)
 	return part
