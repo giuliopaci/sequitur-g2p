@@ -212,8 +212,8 @@ def gOpenOut(fname, encoding=None):
     if fname == '-':
 	out = sys.stdout
     elif os.path.splitext(fname)[1] == '.gz':
-	out = os.popen('gzip -fc >%s' % fname, 'w')
-#	out = gzip.open(fname, 'w')
+#	out = os.popen('gzip -fc >%s' % fname, 'w')
+	out = gzip.open(fname, 'wb')
     else:
 	out = open(fname, 'w')
     if encoding:
@@ -227,8 +227,8 @@ def gOpenIn(fname, encoding=None):
     elif os.path.splitext(fname)[1] == '.gz':
 	if not os.path.isfile(fname):
 	    raise IOError(errno.ENOENT, 'No such file: \'%s\'' % fname)
-	inp = os.popen('gzip -dc %s' % fname, 'r')
-#       inp = gzip.open(fname)
+#	inp = os.popen('gzip -dc %s' % fname, 'r')
+        inp = gzip.open(fname, 'rb')
     else:
 	inp = open(fname)
     if encoding:
