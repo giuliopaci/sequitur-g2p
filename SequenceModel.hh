@@ -36,8 +36,7 @@
 #include <vector>
 
 #if defined(INSTRUMENTATION)
-#include <ext/hash_map>
-namespace std { using namespace __gnu_cxx; }
+#include "UnorderedMap.hh"
 
 struct StringHash {
     size_t operator() (const char *s) const {
@@ -63,7 +62,7 @@ struct StringEquality :
 
 class StringInventory {
     typedef std::vector<const char*> List;
-    typedef std::hash_map<const char*, u32, StringHash, StringEquality> Map;
+    typedef std::unordered_map<const char*, u32, StringHash, StringEquality> Map;
     List list_;
     Map map_;
 public:
