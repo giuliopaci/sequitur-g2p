@@ -262,7 +262,7 @@ public:
     LogProbability accumulate(EstimationGraph *eg, LogProbability weight) {
 	forw_.sync(&eg->graph_); forward(eg);
 	bckw_.sync(&eg->graph_); backward(eg);
-#if 1 // DEBUG
+#if 0 // DEBUG
 	if (!isNearlyEqual(forw_[eg->final_].score(), bckw_[eg->initial_].score(), 100)) {
 		std::cerr << __FILE__ << ":" << __LINE__ << "\t"
 			  << forw_[eg->final_].score() << "\t"
@@ -277,7 +277,7 @@ public:
 		* eg->probability_[e]
 		* bckw_[eg->graph_.target(e)]
 		/ total;
-#if 1 // DEBUG
+#if 0 // DEBUG
 	    if (post > LogProbability::certain() &&
 		!isNearlyEqual(post.probability(), 1.0, 100)) {
 		std::cerr << __FILE__ << ":" << __LINE__ << "\t"
