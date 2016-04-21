@@ -129,7 +129,7 @@ class MemoryTranslator:
 # ===========================================================================
 def mainTest(translator, testSample, options):
     if options.shouldTranspose:
-	testSample = transposeSample(testSample)
+	testSample = SequiturTool.transposeSample(testSample)
     if options.testResult:
 	resultFile = gOpenOut(options.testResult, defaultEncoding)
     else:
