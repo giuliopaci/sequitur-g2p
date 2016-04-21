@@ -194,7 +194,9 @@ class AbstractFileStorage(object):
     def __init__(self, fname = None):
 	self.isTemporary = fname is None
 	if self.isTemporary:
-	    self.fname = tempfile.mkstemp('counts')[1]
+	    tup = tempfile.mkstemp('counts')
+	    self.fname = tup[1]
+	    os.close(tup[0])
 	else:
 	    self.fname = fname
 
