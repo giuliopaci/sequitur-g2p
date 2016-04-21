@@ -144,7 +144,7 @@ namespace AssertionsPrivate {
 	"(NN)", 
 	$1.left.asPyObject(), $1.right.asPyObject());
 }
-#endif SWIGPYTHON
+#endif // SWIGPYTHON
 
 class MultigramInventory {
 public:
@@ -174,7 +174,7 @@ public:
 }
 
 %typemap(out) SequenceModel::History {
-    $result = PyLong_FromVoidPtr($1);
+    $result = PyLong_FromVoidPtr(const_cast<void *>(static_cast<const void *>($1)));
 }
 %typemap(in) SequenceModel::History {
     void *ptr = PyLong_AsVoidPtr($input);
