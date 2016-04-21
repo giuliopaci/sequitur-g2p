@@ -30,9 +30,8 @@
 
 #include "Assertions.hh"
 #include "Types.hh"
-#include <tr1/unordered_map>
+#include "UnorderedMap.hh"
 #include <ext/functional>
-namespace std { using __gnu_cxx::binary_compose; }
 
 namespace Core {
 
@@ -225,9 +224,9 @@ namespace Core {
     /**
      * Heap-based priority queue class template with random access.
      */
-    template <class T_Item, class T_Key = typename T_Item::first_type, class T_KeyFunction = std::select1st<T_Item>,
-	      class T_PriorityFunction = std::binary_compose<std::less<typename T_Item::second_type>,
-							     std::select2nd<T_Item>, std::select2nd<T_Item> >,
+    template <class T_Item, class T_Key = typename T_Item::first_type, class T_KeyFunction = __gnu_cxx::select1st<T_Item>,
+	      class T_PriorityFunction = __gnu_cxx::binary_compose<std::less<typename T_Item::second_type>,
+							     __gnu_cxx::select2nd<T_Item>, __gnu_cxx::select2nd<T_Item> >,
 	      class T_Hash_Obj = std::hash<T_Key> >
     class TracedPriorityQueue :
 	public PriorityQueueBase<
