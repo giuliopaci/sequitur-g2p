@@ -44,7 +44,7 @@ def loadSample(compfname):
     right = gopen(fnames[1])
     sample = []
     for a, b in zip(left, right):
-	sample.append((a.split(), b.split()))
+        sample.append((a.split(), b.split()))
     return sample
 
 
@@ -52,36 +52,36 @@ def addUnknowns(model, words):
     knownWords = Set(model.sequitur.leftInventory.list)
     unknownWords = words - knownWords
     for word in unknownWords:
-	i = model.sequitur.index((word,), (word,))
+        i = model.sequitur.index((word,), (word,))
     print >> sys.stderr, '%d unknown words added to model' % len(unknownWords)
 
 # ===========================================================================
 def main(options, args):
     model = SequiturTool.procureModel(options, loadSample)
     if options.applySample:
-	lines = gopen(options.applySample).readlines()
-	words = Set([ word for line in lines for word in line.split() ])
-	addUnknowns(model, words)
-	translator = Translator(model)
-	for line in lines:
-	    left = tuple(line.split())
-	    try:
-		result = translator(left)
-		print ' '.join(result)
-	    except translator.TranslationFailure:
-		print '<translation-failed/>'
+        lines = gopen(options.applySample).readlines()
+        words = Set([ word for line in lines for word in line.split() ])
+        addUnknowns(model, words)
+        translator = Translator(model)
+        for line in lines:
+            left = tuple(line.split())
+            try:
+                result = translator(left)
+                print ' '.join(result)
+            except translator.TranslationFailure:
+                print '<translation-failed/>'
 
 # ===========================================================================
 if __name__ == '__main__':
     import optparse, tool
     optparser = optparse.OptionParser(
-	usage   = '%prog [OPTION]... FILE...\n' + __doc__,
-	version = '%prog ' + __version__)
+        usage   = '%prog [OPTION]... FILE...\n' + __doc__,
+        version = '%prog ' + __version__)
     SequiturTool.addOptions(optparser)
     tool.addTrainOptions(optparser)
     optparser.add_option(
-	'-a', '--apply', dest='applySample',
-	help='apply translation to sentences read from FILE', metavar='FILE')
+        '-a', '--apply', dest='applySample',
+        help='apply translation to sentences read from FILE', metavar='FILE')
     options, args = optparser.parse_args()
 
     tool.run(main, options, args)
