@@ -32,26 +32,26 @@ TestCase = unittest.TestCase
 
 class MGramsTestCase(TestCase):
     def templateTestX(self, mGramsFromX, events, order):
-	iMgram = 0
-	for mgram in mGramsFromX(events, order):
-	    self.failUnless(type(mgram) is tuple)
-	    self.failUnless(len(mgram) == 2)
-	    history, predicted = mgram
-	    self.failUnlessEqual(predicted, events[iMgram])
-	    self.failUnless(type(history) is tuple)
-	    self.failUnless((len(history) <= order) or (order is None))
-	    iMgram += 1
-	self.failUnlessEqual(iMgram, len(events))
+        iMgram = 0
+        for mgram in mGramsFromX(events, order):
+            self.failUnless(type(mgram) is tuple)
+            self.failUnless(len(mgram) == 2)
+            history, predicted = mgram
+            self.failUnlessEqual(predicted, events[iMgram])
+            self.failUnless(type(history) is tuple)
+            self.failUnless((len(history) <= order) or (order is None))
+            iMgram += 1
+        self.failUnlessEqual(iMgram, len(events))
 
     def templateTest(self, length, order):
-	self.templateTestX(mGramsFromIter,    xrange(length), order)
-	self.templateTestX(mGramsFromSequence, range(length), order)
+        self.templateTestX(mGramsFromIter,    xrange(length), order)
+        self.templateTestX(mGramsFromSequence, range(length), order)
 
     def runTest(self):
-	for length in range(20):
-	    for order in range(6):
-		self.templateTest(length, order)
-	    self.templateTest(length, None)
+        for length in range(20):
+            for order in range(6):
+                self.templateTest(length, order)
+            self.templateTest(length, None)
 
 
 if __name__ == '__main__':
