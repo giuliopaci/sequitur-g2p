@@ -73,18 +73,18 @@ def zipfFit(data):
     data.sort()
     loglog = [ ]
     for j in range(len(data)):
-	r, n = data[j]
-	if j == 0:
-	    r1 = 0
-	else:
-	    r1 = data[j - 1][0]
-	if j == len(data) - 1:
-	    r2 = (2 * r - r1)
-	else:
-	    r2 = data[j + 1][0]
-	assert r1 < r2
-	Z = 2.0 * n / (r2 - r1)
-	loglog.append((math.log(r), math.log(Z)))
+        r, n = data[j]
+        if j == 0:
+            r1 = 0
+        else:
+            r1 = data[j - 1][0]
+        if j == len(data) - 1:
+            r2 = (2 * r - r1)
+        else:
+            r2 = data[j + 1][0]
+        assert r1 < r2
+        Z = 2.0 * n / (r2 - r1)
+        loglog.append((math.log(r), math.log(Z)))
 
     slope, intercept = findBestFit(loglog)
 
@@ -125,29 +125,29 @@ def simpleGoodTuring(data):
     rStar = []
     indiffValsSeen = False
     for r, n in data:
-	y = (r + 1) * nSmoothed(r + 1) / nSmoothed(r)
-	if not indiffValsSeen:
-	    if (r + 1) in nr:
-		next_n = nr[r + 1]
-		x = (r + 1) * next_n / n
-		if abs(x - y) <= 1.96 * math.sqrt(
-		    (r + 1.0) * (r + 1.0)
-		    * next_n / (n*n)
-		    * (1.0 + next_n / n)):
-		    indiffValsSeen = True
-	    else:
-		indiffValsSeen = True
-	if indiffValsSeen:
-	    rStar.append(y)
-	else:
-	    rStar.append(x)
+        y = (r + 1) * nSmoothed(r + 1) / nSmoothed(r)
+        if not indiffValsSeen:
+            if (r + 1) in nr:
+                next_n = nr[r + 1]
+                x = (r + 1) * next_n / n
+                if abs(x - y) <= 1.96 * math.sqrt(
+                    (r + 1.0) * (r + 1.0)
+                    * next_n / (n*n)
+                    * (1.0 + next_n / n)):
+                    indiffValsSeen = True
+            else:
+                indiffValsSeen = True
+        if indiffValsSeen:
+            rStar.append(y)
+        else:
+            rStar.append(x)
 
     Nprime = sum([ n * rs for (r, n), rs in zip(data, rStar) ])
 
     result = [ (0, None, PZero, None) ]
     for (r, n), rs in zip(data, rStar):
-	p = (1.0 - PZero) * rs / Nprime
-	result.append( (r, p, p * n, rs) )
+        p = (1.0 - PZero) * rs / Nprime
+        result.append( (r, p, p * n, rs) )
 
     return result
 
@@ -159,7 +159,7 @@ def main(args):
     data = [ (int(r), int(n)) for r, n in data ]
     sgt = simpleGoodTuring(data)
     for r, p, np, rStar in sgt:
-	print r, p, np, rStar
+        print r, p, np, rStar
 
 
 if __name__ == '__main__':
