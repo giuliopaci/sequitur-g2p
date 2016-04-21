@@ -32,6 +32,7 @@
 #include "Probability.hh"
 #include "ReferenceCounting.hh"
 #include "SequenceModel.hh"
+#include "UnorderedMap.hh"
 #include <stdexcept>
 
 class Translator {
