@@ -184,7 +184,7 @@ def linearMinimization(f, x=None, lower=None, upper=None, tolerance = 1.0e-10, m
 		v = u
 		fv = fu
     else:
-	raise 'failed to converge'
+	raise RuntimeError('failed to converge')
     return x, fx
 
 
@@ -227,7 +227,7 @@ def directionSetMinimization(f, initialPoint, directions = None, tolerance = 1.0
 		directions[directionOfLargestDecrease] = directions[0]
 		directions[0] = averageDirection
     else:
-	raise 'failed to converge'
+	raise RuntimeError('failed to converge')
     return current, fCurrent
 
 
