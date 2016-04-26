@@ -3,7 +3,7 @@
 from __future__ import division
 
 __author__    = 'Maximilian Bisani'
-__version__   = '$LastChangedRevision: 1668 $'
+__version__   = '$LastChangedRevision: 96 $'
 __date__      = '$LastChangedDate: 2007-06-02 18:14:47 +0200 (Sat, 02 Jun 2007) $'
 __copyright__ = 'Copyright (c) 2004-2005  RWTH Aachen University'
 __license__   = """
@@ -305,6 +305,7 @@ class LanguageModelBuilder(object):
             tup = tempfile.mkstemp('counts')
             self.fname = tup[1]
             self.file = os.fdopen(tup[0], 'wb')
+
 
         def add(self, history, values, total):
             marshal.dump(history, self.file)
