@@ -1,6 +1,6 @@
 __author__    = 'Maximilian Bisani'
-__version__   = '$LastChangedRevision: 1691 $'
-__date__      = '$LastChangedDate: 2011-08-03 15:38:08 +0200 (Wed, 03 Aug 2011) $'
+__version__   = '$LastChangedRevision: 96 $'
+__date__      = '$LastChangedDate: 2007-06-02 18:14:47 +0200 (Sat, 02 Jun 2007) $'
 __copyright__ = 'Copyright (c) 2004-2005  RWTH Aachen University'
 __license__   = """
 This program is free software; you can redistribute it and/or modify
@@ -65,8 +65,7 @@ sequiturExtension = Extension(
     extra_compile_args = [
         '-fpermissive'],
     swig_opts = [
-        '-c++', '-shadow'
-    ]
+        '-c++', '-shadow']
     )
 
 sequiturModules = [
