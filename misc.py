@@ -1,8 +1,8 @@
 from __future__ import division
 
 __author__    = 'Maximilian Bisani'
-__version__   = '$LastChangedRevision: 1691 $'
-__date__      = '$LastChangedDate: 2011-08-03 15:38:08 +0200 (Wed, 03 Aug 2011) $'
+__version__   = '$LastChangedRevision: 96 $'
+__date__      = '$LastChangedDate: 2007-06-02 18:14:47 +0200 (Sat, 02 Jun 2007) $'
 __copyright__ = 'Copyright (c) 2004-2005  RWTH Aachen University'
 __license__   = """
 This program is free software; you can redistribute it and/or modify
@@ -213,7 +213,7 @@ def gOpenOut(fname, encoding=None):
         out = sys.stdout
     elif os.path.splitext(fname)[1] == '.gz':
 #        out = os.popen('gzip -fc >%s' % fname, 'w')
-        out = gzip.open(fname, 'wb')
+        out = gzip.open(fname, 'w')
     else:
         out = open(fname, 'w')
     if encoding:
@@ -228,7 +228,7 @@ def gOpenIn(fname, encoding=None):
         if not os.path.isfile(fname):
             raise IOError(errno.ENOENT, 'No such file: \'%s\'' % fname)
 #        inp = os.popen('gzip -dc %s' % fname, 'r')
-        inp = gzip.open(fname, 'rb')
+        inp = gzip.open(fname)
     else:
         inp = open(fname)
     if encoding:

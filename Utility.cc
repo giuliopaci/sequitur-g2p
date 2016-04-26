@@ -1,5 +1,5 @@
 /*
- * $Id: Utility.cc 1691 2011-08-03 13:38:08Z hahn $
+ * $Id: Utility.cc 95 2007-06-02 14:32:35Z max $
  *
  * Copyright (c) 2004-2005  RWTH Aachen University
  *
@@ -28,7 +28,6 @@
 #include "Utility.hh"
 #include <algorithm>
 #include <cstdlib>
-#include <cstdio>
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -41,12 +40,12 @@ int Core::getline(std::istream& is, std::string& str, std::string delim) {
     std::string::size_type pos = std::string::npos;
 
     // check if end of stream is reached
-    if (is.get() == EOF) return EOF;
+    if (is.get() == is.eof()) return is.eof();
     is.unget();
 
     // tokenize stream contents
     str = "";
-    while (((token = is.get()) != EOF) &&
+    while (((token = is.get()) != is.eof()) &&
 	   ((pos = delim.find(token)) == std::string::npos)) {
 	str += char(token);
     }

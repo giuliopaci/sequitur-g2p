@@ -1,5 +1,5 @@
 /*
- * $Id: Utility.hh 1691 2011-08-03 13:38:08Z hahn $
+ * $Id: Utility.hh 95 2007-06-02 14:32:35Z max $
  *
  * Copyright (c) 2004-2005  RWTH Aachen University
  *
@@ -31,6 +31,7 @@
 #include <cmath>
 #include <complex>
 #include <iostream>
+#include <cstdio>
 #include <sstream>
 #include <string>
 #include "Types.hh"
@@ -84,7 +85,7 @@ namespace Core {
 
     /** A helper for conveniently assigning the two values from a pair
      * into separate variables. The idea for this comes from Jaakko
-     * J„rvi's Binder/Lambda Library.  Code stolen from Boost, to
+     * Jarvi's Binder/Lambda Library.  Code stolen from Boost, to
      * which it was contributed by Jeremy Siek */
 
     template <class A, class B>
