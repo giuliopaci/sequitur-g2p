@@ -12,7 +12,7 @@ build-py:
 test:	build
 	mkdir -p tmp-test-install
 	$(PYTHON) setup.py install --skip-build --prefix tmp-test-install
-	export PYTHONPATH=tmp-test-install/lib/python2.5/site-packages; \
+	export PYTHONPATH=tmp-test-install/lib/python2.7/site-packages; \
 	$(PYTHON) test_mGramCounts.py		;\
 #	$(PYTHON) test_SparseVector.py		;\
 #	$(PYTHON) test_LanguageModel.py		;\
@@ -35,6 +35,18 @@ clean:
 	rm -f *.pyc
 	rm -f SparseVector.c
 	rm -f sequitur_.py sequitur_wrap.cpp
+
+
+release:
+	d=$$(mktemp -d); \
+	  mkdir $$d/g2p; \
+	  cp *.cc *.hh *.py *.pyx *.i *.sh CHANGES LICENSE README Makefile $$d/g2p; \
+	  cd $$d; \
+	  rm g2p/sequitur_.py; \
+	  tar cvzf g2p.tar.gz g2p; \
+	  rm -rf g2p; \
+	  cd -; \
+	  mv $$d/g2p.tar.gz .
 
 # ---------------------------------------------------------------------------
 
