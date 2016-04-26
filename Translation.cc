@@ -1,5 +1,5 @@
 /*
- * $Id: Translation.cc 1691 2011-08-03 13:38:08Z hahn $
+ * $Id: Translation.cc 95 2007-06-02 14:32:35Z max $
  *
  * Copyright (c) 2004-2005  RWTH Aachen University
  *
